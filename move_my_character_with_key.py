@@ -5,7 +5,7 @@ open_canvas(TUK_WIDTH, TUK_HEIGHT)
 tuk_ground = load_image('TUK_GROUND.png')
 character = load_image('Jelda.png')
 
-state = 'IDLE'
+state = 'LEFT'
 frame = 0
 running = True
 def handle_events():
@@ -28,7 +28,7 @@ def handle_events():
             elif event.key == SDLK_UP:
                 state = 'UP'
         else:
-            state = 'IDLE'
+            state = 'LEFT'
 def Character_Idle():
     global frame
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
@@ -37,11 +37,14 @@ def Character_Idle():
     handle_events()
     frame = (frame+1) % 3
     delay(0.1)
-    pass
-
 def Character_Left():
-    pass
-
+    global frame
+    tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
+    character.clip_draw(frame * 90, 0, 90, 97, 640, 512)
+    update_canvas()
+    handle_events()
+    frame = (frame + 1) % 10
+    delay(0.1)
 def Character_Right():
     pass
 
