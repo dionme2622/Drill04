@@ -10,29 +10,28 @@ running = True
 
 def handle_events():
     global running
-
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_LEFT:
-                pass
+                Move_Left()
             elif event.key == SDLK_RIGHT:
-                pass
+                Move_Right()
             elif event.key == SDLK_UP:
-                pass
+                Move_Up()
             elif event.key == SDLK_DOWN:
-                pass
+                Move_Down
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
-                pass
+                Idle()
             elif event.key == SDLK_RIGHT:
-                pass
+                Idle()
             elif event.key == SDLK_UP:
-                pass
+                Idle()
             elif event.key == SDLK_DOWN:
-                pass
+                Idle()
 
 while running:
     handle_events()
