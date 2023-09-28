@@ -7,7 +7,16 @@ character_idle = load_image('Pinkbean_Idle.png')
 character_move = load_image('Pinkbean_Move.png')
 
 running = True
-
+def Move_Left():
+    pass
+def Move_Right():
+    pass
+def Move_Up():
+    pass
+def Move_Down():
+    pass
+def Idle():
+    pass
 def handle_events():
     global running
     events = get_events()
@@ -32,6 +41,9 @@ def handle_events():
                 Idle()
             elif event.key == SDLK_DOWN:
                 Idle()
+
+
+
 
 while running:
     handle_events()
