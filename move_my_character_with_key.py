@@ -12,9 +12,11 @@ running = True
 frame, x, y, diff = 0, 0, 0, 15
 a, b, c = 0, 0, 0
 dir = 0
+
 def Move_Left():
     global x, frame, a, b, c
-    x += dir * diff
+    if((TUK_WIDTH // 2 + x) > 55):
+        x += dir * diff
     if frame < 3:
         character_move.clip_draw(0 + a * 102, 0, 113, 126, TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 100, 100)
         a = (a + 1) % 3
@@ -27,7 +29,8 @@ def Move_Left():
     frame = (frame + 1) % 9
 def Move_Right():
     global x, frame, a, b, c
-    x += dir * diff
+    if ((TUK_WIDTH // 2 + x) < 1235):
+        x += dir * diff
     if frame < 3:
         character_move.clip_composite_draw(0 + a * 102, 0, 113, 126, 0, 'h', TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 100, 100)
         a = (a + 1) % 3
@@ -40,7 +43,8 @@ def Move_Right():
     frame = (frame + 1) % 9
 def Move_Up():
     global y, frame, a, b, c
-    y += dir * diff
+    if ((TUK_WIDTH // 2 + y) < TUK_HEIGHT + 64):
+        y += dir * diff
     if direction == 'LEFT':
         if frame < 3:
             character_move.clip_draw(0 + a * 102, 0, 113, 126, TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 100, 100)
@@ -67,7 +71,8 @@ def Move_Up():
     frame = (frame + 1) % 9
 def Move_Down():
     global y, frame, a, b, c
-    y += dir * diff
+    if ((TUK_WIDTH // 2 + y) > 200):
+        y += dir * diff
     if direction == 'LEFT':
         if frame < 3:
             character_move.clip_draw(0 + a * 102, 0, 113, 126, TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 100, 100)
@@ -97,15 +102,31 @@ def Move_Down():
     frame = (frame + 1) % 9
 
 def Idle():
+    global frame, x, y, a, b
+    if direction == 'LEFT':
+        if frame < 3:
+            character_idle.clip_draw(0 + a * 105, 0, 105, 118, TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 100, 100)
+            a = (a + 1) % 3
+        elif frame < 6:
+            character_idle.clip_draw(318 + b * 131, 0, 131, 118, TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 120, 100)
+            b = (b + 1) % 3
+    elif direction == 'RIGHT':
+        if frame < 3:
+            character_idle.clip_composite_draw(0 + a * 105, 0, 105, 118, 0, 'h', TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 100, 100)
+            a = (a + 1) % 3
+        elif frame < 6:
+            character_idle.clip_composite_draw(318 + b * 131, 0, 131, 118, 0, 'h', TUK_WIDTH // 2 + x, TUK_HEIGHT // 2 + y, 120, 100)
+            b = (b + 1) % 3
+    frame = (frame + 1) % 6
 
-    pass
 def handle_events():
-    global running, direction, dir, move
+    global running, direction, dir, move, frame
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN:
+            frame = 0
             if event.key == SDLK_LEFT:
                 dir -= 1
                 direction = 'LEFT'
@@ -120,24 +141,25 @@ def handle_events():
             elif event.key == SDLK_DOWN:
                 dir -= 1
                 move = 'DOWN'
+
         elif event.type == SDL_KEYUP:
+            #frame = 0
             if event.key == SDLK_LEFT:
-                Idle()
+                move = 'IDLE'
                 dir += 1
             elif event.key == SDLK_RIGHT:
-                Idle()
+                move = 'IDLE'
                 dir -= 1
             elif event.key == SDLK_UP:
-                Idle()
+                move = 'IDLE'
                 dir -= 1
             elif event.key == SDLK_DOWN:
-                Idle()
+                move = 'IDLE'
                 dir += 1
 
 
 while running:
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
-    # Move_Right()
     if move == 'LEFT':
         Move_Left()
     elif move == 'RIGHT':
@@ -146,6 +168,8 @@ while running:
         Move_Up()
     elif move == 'DOWN':
         Move_Down()
+    elif move == 'IDLE':
+        Idle()
     update_canvas()
     handle_events()
     delay(0.1)
