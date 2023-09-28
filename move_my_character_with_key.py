@@ -7,14 +7,21 @@ character_idle = load_image('Pinkbean_Idle.png')
 character_move = load_image('Pinkbean_Move.png')
 
 running = True
+x, y, diff = 0, 0, 0
 def Move_Left():
-    pass
+    global x
+    x = x - diff
 def Move_Right():
-    pass
+    global x
+    x = x + diff
 def Move_Up():
-    pass
+    global y
+    y = y + diff
+
 def Move_Down():
-    pass
+    global y
+    y = y - diff
+
 def Idle():
     pass
 def handle_events():
